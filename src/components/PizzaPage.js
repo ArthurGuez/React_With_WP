@@ -23,7 +23,10 @@ function PizzaPage() {
 
     const addLike = useCallback(async () => {
         await axios(`/wp-json/example/v2/likes/${pizzaId}`);
-        }, [pizzaId]);
+        
+        setLike();
+
+    }, [pizzaId]);
 
     return (
         <Fragment>
