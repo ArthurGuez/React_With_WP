@@ -1,48 +1,47 @@
-import React, { useState, useEffect, Fragment, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect, Fragment, useCallback } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function PizzaPage() {
-    const { pizzaId } = useParams();
+  const { pizzaId } = useParams();
 
-    const [content, setContent] = useState();
-    const [restaurant, setRestaurant] = useState();
-    const [like, setLike] = useState();
+  const [content, setContent] = useState();
+  const [restaurant, setRestaurant] = useState();
+  const [like, setLike] = useState();
 
-    useEffect(() => {
-    const fetchPizzaById = async (pizzaId) => {
-        const res = await axios(`/wp-json/wp/v2/pizzas/${pizzaId}`);
+  useEffect(() => {
+    const fetchPizzaById = async () => {
+      const res = await axios(`/wp-json/wp/v2/pizzas/${pizzaId}`);
 
-        setContent(res.data.content.rendered);
-        setRestaurant(res.data.acf.restaurant);
-        setLike(res.data.acf.likes_number);
+      setContent(res.data.content.rendered);
+      setRestaurant(res.data.acf.restaurant);
+      setLike(res.data.acf.likes_number);
     };
 
-    fetchPizzaById(pizzaId);
-    });
+    fetchPizzaById();
+  });
 
-    const addLike = useCallback(async () => {
-        await axios(`/wp-json/example/v2/likes/${pizzaId}`);
-        
-        setLike();
+  const addLike = useCallback(async () => {
+    await axios(`/wp-json/example/v2/likes/${pizzaId}`);
 
-    }, [pizzaId]);
+    setLike();
+  }, [pizzaId]);
 
-    return (
-        <Fragment>
-            <Link to='/'>Page Précédente</Link>
-            
-            <hr />
+  return (
+    <Fragment>
+      <Link to="/">Page Précédente</Link>
 
-            <p dangerouslySetInnerHTML={{ __html: content}}></p>
+      <hr />
 
-            <p>Restaurant: {restaurant}</p>
+      <p dangerouslySetInnerHTML={{ __html: content }}></p>
 
-            <button type="button" onClick={addLike}>
-                <span>{like}</span>
-            </button>
-        </Fragment>
-    )
+      <p>Restaurant: {restaurant}</p>
+
+      <button type="button" onClick={addLike}>
+        <span>{like}</span>
+      </button>
+    </Fragment>
+  );
 }
 
 export default PizzaPage;
